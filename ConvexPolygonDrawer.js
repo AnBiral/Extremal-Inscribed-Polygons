@@ -15,7 +15,7 @@ class ConvexPolygonDrawer{
     }
 
     convexSetup(p){
-        this.canvas = p.createCanvas(400, 400);
+        this.canvas = p.createCanvas(1000, 500);
         this.canvasBox = new BoundingBox(this.canvas);
 
         this.canvas.parent(this.parent);
@@ -55,7 +55,6 @@ class ConvexPolygonDrawer{
                 this.convexHull[this.convexHull.length - 1].y
             );
         }
-        p.text("HELLO WORLD", 30, 50);
     }
 
     convexMousePressed(p){
