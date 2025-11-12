@@ -8,20 +8,116 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <title>P5.js Sketch</title>
   <script src="p5.js"></script>
-  <script src="utils.js"></script>  
+  <script src="utils.js"></script>
   <script src="ConvexPolygonDrawer.js"></script>
 </head>
 
 <body>
 
-  <h1>My First Heading</h1>
-  <p>My first paragraph.</p>
+  <h1>Extremal Inscribed Polygons</h1>
+  <h2>subtitle</h2>
+  <div>
+    <p>
+      In this webpage, we will describe algorithms to find the convex polygons inscribed in a given convex n-gon
+      (An n-gon being a polygon with n sides. In the context of this work, n >= 5) of minimal area and perimeter.
+      In order to do this, we will describe and explain a series of theorems and lemmas that will define how said
+      algorithms will function.
+    </p>
+  </div>
+
+  <div>
+    <h2>Inscribed Convex Polygons</h2>
+    <p>
+      ...But what are polygons inscribed in other polygons?
+    </p>
+    <p>
+      Those reading this may be familiar with polygons inscribed in circles; polygons whose every vertex is part of a
+      certain circle.
+      The rationale behind inscribing polygons into other polygons is similar, but with some more restrictions.
+      Specifically, for a polygon Q
+      inscribed in a polygon C:<br>
+      > Every vertex of Q must be on an edge of C<br>
+      > Every edge of C must contain <i>at least</i> one vertex of Q (For the purpose of this exercise you can assume,
+      without loss of generality, that every edge of C contains exactly 1 vertex of Q). Importantly, note that the
+      vertices of Q
+      are allowed to overlap.<br><br>
+      Below, you can find a couple examples of polygons inscribed (and not inscribed) into a regular pentagon: <br>
+      Figure 1.a: The polygon composed by all the midpoints of the sides of the pentagon is an inscribed polygon.
+      As we will see later, of all polygons inscribed in a regular pentagon, it is also the one that has the smallest
+      perimeter. <br>
+      Figure 1.b: This polygon is also an inscribed polygon, as points q<sub>1</sub> (on edge
+      p<sub>1</sub>p<sub>2</sub>) and q<sub>5</sub>
+      (on edge p5p1) are overlapping on point p<sub>1</sub>,
+      and points q2 and q3 are also overlapping on point p<sub>3</sub>. As with 1.a, this also happens to be an extremal
+      polygon, except this time it is
+      (one of) the polygons with the smallest area. <br>
+      Figure 1.c: Unlike the two before, this polygon is not inscribed in the pentagon, as no edges of Q are on edges
+      p<sub>1</sub>p<sub>2</sub> and p<sub>4</sub>p<sub>5</sub>.
+    </p>
+  </div>
+
+  <div style="width: 1050px;">
+    <img src="Diagrams/1abc.png" alt="Dia1abc" style="width: 70%; height: 70%"><br><br>
+  </div>
+
+  <div>
+    <h2>Some other assumptions...</h2>
+    <p>
+      For the purposed of clarity and brevity, here are some statements that will remain true throughout: <br>
+      > All polygons discussed are <i>convex</i> polygons. i.e, polygons such that every line between any 2 points in
+      the polygon
+      is either entirely inside the polygon, or part of its boundary. <br>
+      > Polygon Q, composed of points q<sub>1</sub>, q<sub>2</sub>, ..., q<sub>k</sub> is inscribed in polygon C,
+      composed of points p<sub>1</sub>, p<sub>2</sub>, ..., p<sub>n</sub>. <br>
+      > All points are in counter-clockwise order. <br>
+      > We define s<sup>C</sup>(Q) = {U, N}<sup>n</sup>, which describe a cyclical sequence of n elements, corresponding
+      to whether each vertex of C
+      contains a vertex of Q (U), or not (N). <br>
+      &nbsp;&nbsp;&nbsp;&nbsp;For example, the sequence s<sup>C</sup>(Q) corresponding to Figure 1.a is {N, N, N, N, N}
+      and the sequence for Figure 1.b is {U, N, U, U, N}. <br>
+      Additionally, you can find a <a href="#Glossary">Glossary</a> at the end of the page
+    </p>
+  </div>
+
+  <div>
+    <h2>Minimum Area Inscribed Polygons</h2>
+    <p>
+      This relatively simple algorithm stems from this singular theorem: <br> <br>
+      <b>Theorem 1</b> <br>
+      <i>
+        Let Q be a minimum area convex polygon inscribed in C: <br> <br>
+        (i) Q has no two consecutive vertices that are interior points of some sides of C. <br>
+        (ii) If q<sub>j</sub> is a vertex of Q contained in the interior of p<sub>i</sub>p<sub>i+1</sub>,
+        then the vertices of Q adjacent to q<sub>j</sub> are p<sub>i-1</sub> and p<sub>i+2</sub>, and is parallel to
+        p<sub>i</sub>p<sub>i+1</sub>. <br>
+        (iii) There is a minimum area convex polygon Q<sub>0</sub> inscribed in C, with vertices 
+        q'<sub>1</sub>, q'<sub>2</sub>,..., q'<sub>k</sub>, such that<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;- q<sub>j</sub> is a vertex of C if and only if q<sub>j</sub> = q'<sub>j</sub>, and<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;- if q<sub>j</sub> is an interior point of p<sub>i</sub>p<sub>i+1</sub>, then 
+        q'<sub>j</sub> ∈ {p<sub>i</sub>, p<sub>i+1</sub>}.
+      </i>
+    </p>
+  </div>
+
   <div class="column">
     <div class="container">
-      <div id="sketch"></div>
+      <div id="mas"></div>
     </div>
-    <script src="sketch.js"></script>
+    <script src="MinimumArea.js"></script>
   </div>
+
+  <div>
+    <h2 id="Glossary">
+      Glossary
+    </h2>
+    <p>
+      p<sub>i</sub>p<sub>j</sub> - An edge between points p<sub>i</sub> and p<sub>j</sub>
+      area(K) - Area of a convex area K. <br>
+      perim(K) - Perimeter of a convex area K. <br>
+      conv(X) - Convex Hull of a set of points (i.e. the smallest convex polygon that contains all points). <br>
+    </p>
+  </div>
+
 </body>
 
 </html>

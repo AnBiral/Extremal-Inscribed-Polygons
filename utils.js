@@ -13,13 +13,10 @@ class BoundingBox {
     constructor(canvas) {
         this.canvas = canvas;
 
-        let canvasElement = this.canvas.elt;
-        let rect = canvasElement.getBoundingClientRect();
-
-        this.top = rect.top;
-        this.left = rect.left;
-        this.width = rect.width;
-        this.height = rect.height;
+        this.top = canvas.position().y;
+        this.left = canvas.position().x;
+        this.width = canvas.size().width;
+        this.height = canvas.size().height;
     };
 
     isInside(x, y) {

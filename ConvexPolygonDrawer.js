@@ -1,7 +1,10 @@
+const BUT_POS = [85, 125];
+
 class ConvexPolygonDrawer{
     constructor(parent, clearFunc = () => {}){
         this.parent = parent;
 
+        this.canvas;
         this.canvasBox;
         this.buttonBoxes = [];
 
@@ -12,30 +15,23 @@ class ConvexPolygonDrawer{
     }
 
     convexSetup(p){
-        let canvas = p.createCanvas(400, 400);
-        this.canvasBox = new BoundingBox(canvas);
+        this.canvas = p.createCanvas(400, 400);
+        this.canvasBox = new BoundingBox(this.canvas);
 
-        canvas.parent(this.parent);
+        this.canvas.parent(this.parent);
 
         p.fill("black");
         p.textSize(40);
         let button = p.createButton("Clear");
-        button.position(this.canvasBox.left + 30, this.canvasBox.top + 85);
+        button.position(30, this.canvas.position().y + BUT_POS[0]);
         button.mousePressed(() => {
             this.points = [];
             this.convexHull = [];
             this.clearFunc();
         });
 
-        // TODO: put in child class
-        let buttonDraw = p.createButton("Draw");
-        buttonDraw.position(this.canvasBox.left + 30, this.canvasBox.top + 125);
-        buttonDraw.mousePressed(() => {
-        });
-
 
         this.buttonBoxes.push(new BoundingBox(button));
-        this.buttonBoxes.push(new BoundingBox(buttonDraw));
     }
 
     convexDraw(p){
@@ -64,7 +60,7 @@ class ConvexPolygonDrawer{
 
     convexMousePressed(p){
         for (let b in this.buttonBoxes) {
-            if (this.buttonBoxes[b].isInsideHTML(p.mouseX + this.canvasBox.left, p.mouseY + this.canvasBox.top)) { return; }
+            if (this.buttonBoxes[b].isInsideHTML(p.mouseX + this.canvas.position().x, p.mouseY + this.canvas.position().y)) { return; }
         }
         if (!this.canvasBox.isInside(p.mouseX, p.mouseY)) { return; }
         this.points.push(new Point(p.mouseX, p.mouseY));
