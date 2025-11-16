@@ -44,7 +44,7 @@ class MovableArea {
         p.text("p", 360, 100);
 
         p.text("q", this.points[0].x-10, this.points[0].y+15);
-        p.text("q", sharedX, mvy+12);
+        p.text("qj", sharedX, mvy+12);
         p.text("q", this.points[1].x+10, this.points[1].y);
 
         p.textSize(8);
@@ -54,7 +54,7 @@ class MovableArea {
         p.text("i+2", 368, 102);
 
         p.text("j-1", this.points[0].x-2, this.points[0].y+17);
-        p.text("j", sharedX+8, mvy+14);
+        //p.text("j", sharedX+8, mvy+14); // This does not work for some reason
         p.text("j+1", this.points[1].x+18, this.points[1].y+2);
         
 
