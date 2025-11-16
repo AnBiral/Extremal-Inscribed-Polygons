@@ -65,30 +65,43 @@ class MinimumAreaSketch extends ConvexPolygonDrawer {
             let buttonDraw = p.createButton("Find");
             buttonDraw.position(30, this.canvas.position().y + BUT_POS[1]);
             buttonDraw.mousePressed(() => {
-                this.sQ = [];
-                let sQInv = this.findMinimumArea();
-                for (let i = 0; i < this.convexHull.length; i++) {
-                    var add = true;
-                    for (let j in sQInv) {
-                        if (sQInv[j] == i) add = false;
+                if (this.convexHull.length >= 5) {
+                    this.sQ = [];
+                    let sQInv = this.findMinimumArea();
+                    for (let i = 0; i < this.convexHull.length; i++) {
+                        var add = true;
+                        for (let j in sQInv) {
+                            if (sQInv[j] == i) add = false;
+                        }
+                        if (add) this.sQ.push(i);
                     }
-                    if (add) this.sQ.push(i);
                 }
-            });
+            }
+            );
             this.buttonBoxes.push(new BoundingBox(buttonDraw));
         }
 
         p.draw = () => {
             this.convexDraw(p);
-            for (let s = 0; s < this.sQ.length; s++) {
+            p.fill(122, 122, 122);
 
-                p.line(
-                    this.convexHull[this.sQ[s]].x,
-                    this.convexHull[this.sQ[s]].y,
-                    this.convexHull[this.sQ[(s + 1) % this.sQ.length]].x,
-                    this.convexHull[this.sQ[(s + 1) % this.sQ.length]].y
-                )
+            p.beginShape();
+
+            for (let s = 0; s < this.sQ.length; s++) {
+                p.vertex(this.convexHull[this.sQ[s]].x, this.convexHull[this.sQ[s]].y);
+
             }
+
+            p.endShape(p.CLOSE);
+
+            //p.line(
+            //    this.convexHull[this.sQ[s]].x,
+            //    this.convexHull[this.sQ[s]].y,
+            //    this.convexHull[this.sQ[(s + 1) % this.sQ.length]].x,
+            //    this.convexHull[this.sQ[(s + 1) % this.sQ.length]].y
+            //)
+
+            p.fill("black");
             p.text("Minimum Area Polygons", 30, 50);
         }
 

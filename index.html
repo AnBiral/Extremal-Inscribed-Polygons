@@ -10,6 +10,17 @@
   <script src="p5.js"></script>
   <script src="utils.js"></script>
   <script src="ConvexPolygonDrawer.js"></script>
+  <script src="MovableArea.js"></script>
+
+  <style>
+    .row {
+      display: flex;
+    }
+
+    .column {
+      flex: 50%;
+    }
+  </style>
 </head>
 
 <body>
@@ -57,7 +68,7 @@
   </div>
 
   <div style="width: 1050px;">
-    <img src="Diagrams/1abc.png" alt="Dia1abc" style="width: 70%; height: 70%"><br><br>
+    <img id="Figure1" src="Diagrams/1abc.png" alt="Dia1abc" style="width: 70%; height: 70%"><br><br>
   </div>
 
   <div>
@@ -81,6 +92,7 @@
 
   <div>
     <h2>Minimum Area Inscribed Polygons</h2>
+    <h3>The basics</h3>
     <p>
       This relatively simple algorithm stems from this singular theorem: <br> <br>
       <b>Theorem 1</b> <br>
@@ -90,21 +102,145 @@
         (ii) If q<sub>j</sub> is a vertex of Q contained in the interior of p<sub>i</sub>p<sub>i+1</sub>,
         then the vertices of Q adjacent to q<sub>j</sub> are p<sub>i-1</sub> and p<sub>i+2</sub>, and is parallel to
         p<sub>i</sub>p<sub>i+1</sub>. <br>
-        (iii) There is a minimum area convex polygon Q<sub>0</sub> inscribed in C, with vertices 
+        (iii) There is a minimum area convex polygon Q<sub>0</sub> inscribed in C, with vertices
         q'<sub>1</sub>, q'<sub>2</sub>,..., q'<sub>k</sub>, such that<br>
         &nbsp;&nbsp;&nbsp;&nbsp;- q<sub>j</sub> is a vertex of C if and only if q<sub>j</sub> = q'<sub>j</sub>, and<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;- if q<sub>j</sub> is an interior point of p<sub>i</sub>p<sub>i+1</sub>, then 
-        q'<sub>j</sub> ∈ {p<sub>i</sub>, p<sub>i+1</sub>}.
+        &nbsp;&nbsp;&nbsp;&nbsp;- if q<sub>j</sub> is an interior point of p<sub>i</sub>p<sub>i+1</sub>, then
+        q'<sub>j</sub> ∈ {p<sub>i</sub>, p<sub>i+1</sub>}.<br><br><br>
       </i>
     </p>
   </div>
 
-  <div class="column">
-    <div class="container">
-      <div id="mas"></div>
+  <div>
+    <p>
+      In order to prove this theorem, we will use one basic geometical concept, which is the following: <br>
+      Given a triangle, if you slide one of its points across a ficitonal line, if that fictional line is parallel to
+      the
+      line formed by the other
+      2 points of the triangle, its area will remain the same. If the fictional line is not parallel, the triangle's
+      area
+      will decrease as you slide
+      the point closer to the other 2 points, and increase if you slide it further away. A basic interactive example of
+      this concept has been
+      provided <a href="#slider">below</a>.<br><br>
+    </p>
+
+    <div class="slidecontainer" , id="slider">
+      <label for="areaslider">Slide the point across the bottom side of the polygon.</label><input type="range"
+        min="125" max="275" value="200" step="0.1" class="slider" id="areaslider" style="width: 100%;">
     </div>
-    <script src="MinimumArea.js"></script>
+
+
+    <div class="row">
+      <div class="column">
+        <div class="container">
+          <div id="parallel"></div>
+        </div>
+        <script src="AreaParallel.js"></script>
+      </div>
+
+
+      <div class="column">
+        <div class="container">
+          <div id="nonParallel"></div>
+        </div>
+        <script src="AreaNonParallel.js"></script>
+      </div>
+
+    </div>
+
+
+    <p>
+      Using this property, we can prove (i) by contradiction: <br>
+      Let us assume that Q is a minimum area polygon inscribed in C, and vertices q<sub>j</sub> and q<sub>j+1</sub>
+      being
+      interior points of some
+      side of C, with point q<sub>j</sub> belonging to p<sub>i</sub>p<sub>i+1</sub>, point
+      q<sub>j+1</sub> belonging to p<sub>i+1</sub>p<sub>i+2</sub>, andsoforth. Using the concept described earlier, we
+      know that for q<sub>j</sub> to be
+      an interior point, q<sub>j-1</sub>q<sub>j+1</sub> and p<sub>i</sub>p<sub>i+1</sub> must be parallel, and for
+      q<sub>j+1</sub> to be an interior point,
+      p<sub>i+1</sub>p<sub>i+2</sub> and q<sub>j</sub>q<sub>j+2</sub> must be parallel (Figure 2.a).<br>
+      ...However, this also means that we can slide q<sub>j</sub> along p<sub>i</sub>p<sub>i+1</sub> whilst keeping the
+      area of Q identical. This, in turn,
+      means that q<sub>j</sub>q<sub>j+2</sub> and p<sub>i+1</sub>p<sub>i+2</sub> are no longer parallel (Figure
+      2.b).<br>
+      This means that we can now slide q<sub>j+1</sub> along p<sub>i+1</sub>p<sub>i+2</sub> and get a new inscribed
+      polygon Q' with area(Q') < area(Q). (Figure 2.c). <br>
+        Hence, if any 2 consecutive vertices of an isncribed polygon are interior points, we can slide them on their
+        respective sides to create a new
+        polygon with a smaller area, and both vertices no longer being interior points.<br><br>
+    </p>
+
+    <div style="width: 1050px;">
+      <img id="Figure2" src="Diagrams/2abc.png" alt="Dia1abc" style="width: 70%; height: 70%"><br><br>
+    </div>
+
+    <p>
+      Using this, we can trivially prove (ii): <br>
+      Since we know that, per (i), if q<sub>j</sub> is an interior point, q<sub>j-1</sub> cannot be an interior point as
+      well, q<sub>j-1</sub> must
+      be overlapping either p<sub>i</sub> or p<sub>i-1</sub>. However, if q<sub>j-1</sub> was overlapping p<sub>i</sub>,
+      you could slide q<sub>j</sub>
+      towards p<sub>i</sub>, and create a new inscribed polygon Q' of smaller area where p<sub>i</sub> = q<sub>j-1</sub>
+      = q<sub>j</sub>, contradicting our
+      initial statement. Thus, if q<sub>j</sub> is an interior point, q<sub>j-1</sub> = p<sub>i-1</sub>. The proof for
+      q<sub>j+1</sub> = p<sub>i+2</sub>
+      can be found using a similar argument.<br><br>
+
+      Finally, (iii) is a simple consequence of (i) and (ii) which states that given any inscribed polygon Q of minimum
+      area, we can construct another
+      inscribed polygon Q' of identical area, with all vertices of Q that are interior points of an edge of C being slid
+      onto either adjacent vertex of C,
+      such that all vertices of Q' are overlapping a vertex of C.
+    </p>
   </div>
+
+
+
+  <div>
+    <h3>The Algorithm</h3>
+    <p>
+      Using Theorem 1, we can transform the problem of finding a minimal area polygon Q inscribed in a polygon C into a
+      much simpler yet equivalent
+      problem, by adding one restriction: Every vertex of Q must lie on a vertex of C. Knowing this, we also know that
+      every side of Q is either a side of
+      C, or a diagonal of C that connects 2 vertices p<sub>i</sub>, p<sub>i+2</sub> separated by a single vertex, due to
+      the properties of inscribed polygons. Hence, we can define T<sub>i</sub>, the area of the triangle formed by
+      points p<sub>i-1</sub>,p<sub>i</sub>,p<sub>i+1</sub> of C. The problem of maximizing the area of C then becomes
+      the problem of maximizing the sum of set {T<sub>1</sub>,..., T<sub>n</sub>}, with the restriction that no two
+      triangles with consecutive indices, nor T<sub>1</sub> and T<sub>n</sub> can be chosen at the same time. <br>
+      To find this maximum, we can separate all sequences of T<sub>i</sub>s into 2 types, corresponding to whether or
+      not they contain T<sub>1</sub>, which we will call A<sup>1</sup> (contains T<sub>1</sub>), and A<sup>2</sup>
+      (doesn't contain T<sub>1</sub>). <br>
+      We can recursively calculate A<sup>1</sup><sub>k</sub> and A<sup>2</sup><sub>k</sub>, or the maximum value for
+      A<sup>1</sup>/A<sup>2</sup> for all triangles T<sub>1</sub> to T<sub>k</sub> by defining A<sup>n</sup><sub>k</sub>
+      = max{A<sup>n</sup><sub>k-1</sub>, A<sup>n</sup><sub>k-2</sub> + T<sub>k</sub>}, and then setting
+      A<sup>1</sup><sub>1</sub> = A<sup>1</sup><sub>2</sub> = T<sub>1</sub>, A<sup>1</sup><sub>3</sub> = T<sub>3</sub>
+      and A<sup>2</sup><sub>2</sub> = T<sub>2</sub>, A<sup>2</sup><sub>3</sub> = max{T<sub>2</sub>, T<sub>3</sub>}.
+      Using these two formulas, we can compute A<sup>1</sup><sub>n-1</sub> and A<sup>2</sup><sub>n</sub> (note that we
+      use A<sup>1</sup><sub>n-1</sub> and not A<sup>1</sup><sub>n</sub>, since T<sub>1</sub> and T<sub>n</sub> cannot be
+      in the same sequence). The maximum of these two values will correspond to the sequence of vertices that are
+      <i>not</i> included in the minimal area inscribed polygon Q. (So, for example, for a 5-sided polygon C, if
+      max{A<sup>1</sup><sub>4</sub>, A<sup>2</sup><sub>5</sub>} = A<sup>2</sup><sub>n</sub> = (T<sub>2</sub> +
+      T<sub>5</sub>), then Q = conv(p<sub>1</sub>, p<sub>3</sub>, p<sub>4</sub>). Notice that this corresponds to the
+      polygons in <a href="#Figure1">Figure 1.b</a>, as described in the preamble.)<br><br><br>
+      Below, you can find an interactive tool to try out this algorithm. Click anywhere on the canvas to place a point.
+      If the canvas contains 3 or more points, it will automatically compute and display the convex hull of the set of
+      points (i.e. the circumscribed polygon C). If C contains 5 or more points, click on the "find" button to display
+      the minimum area polygon inscribed in C.
+
+
+    </p>
+  </div>
+
+
+
+
+  <div class="container">
+    <div id="mas"></div>
+  </div>
+  <script src="MinimumArea.js"></script>
 
   <div>
     <h2 id="Glossary">
@@ -117,6 +253,8 @@
       conv(X) - Convex Hull of a set of points (i.e. the smallest convex polygon that contains all points). <br>
     </p>
   </div>
+
+  /* each side of Q must contain at least one vertex of C */
 
 </body>
 
