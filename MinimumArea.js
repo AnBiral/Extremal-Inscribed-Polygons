@@ -88,18 +88,12 @@ class MinimumAreaSketch extends ConvexPolygonDrawer {
             p.beginShape();
 
             for (let s = 0; s < this.sQ.length; s++) {
+                p.ellipse(this.convexHull[this.sQ[s]].x, this.convexHull[this.sQ[s]].y, 6, 6)
                 p.vertex(this.convexHull[this.sQ[s]].x, this.convexHull[this.sQ[s]].y);
 
             }
 
             p.endShape(p.CLOSE);
-
-            //p.line(
-            //    this.convexHull[this.sQ[s]].x,
-            //    this.convexHull[this.sQ[s]].y,
-            //    this.convexHull[this.sQ[(s + 1) % this.sQ.length]].x,
-            //    this.convexHull[this.sQ[(s + 1) % this.sQ.length]].y
-            //)
 
             p.fill("black");
             p.text("Minimum Area Polygons", 30, 50);
@@ -113,6 +107,7 @@ class MinimumAreaSketch extends ConvexPolygonDrawer {
                     clearDraw = false;
                 }
             }
+            if (!this.canvasBox.isInside(p.mouseX, p.mouseY)) clearDraw = false;
             if (clearDraw) {
                 this.sQ = [];
             }

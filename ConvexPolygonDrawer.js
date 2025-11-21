@@ -36,10 +36,13 @@ class ConvexPolygonDrawer{
 
     convexDraw(p){
         p.background(200);
-        for (i in this.points) {
-            p.ellipse(this.points[i].x, this.points[i].y, 4, 4);
+        for (let i = 0; i < this.points.length; i++) {
+            p.ellipse(this.points[i].x, this.points[i].y, 2, 2);
         }
         if (this.convexHull.length > 2) {
+            for (let i = 0; i < this.convexHull.length; i++) {
+                p.ellipse(this.convexHull[i].x, this.convexHull[i].y, 4, 4);
+            }
             for (var i = 0; i < this.convexHull.length - 1; i++) {
                 p.line(
                     this.convexHull[i].x,
