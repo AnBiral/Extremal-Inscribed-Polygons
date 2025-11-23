@@ -2,27 +2,27 @@ class MinimumPerimeterSketch extends ConvexPolygonDrawer {
     constructor(parent) {
         super(parent, () => this.resetMPS());
         this.minPerimPoly = [];
-            
+
     }
 
     resetMPS() {
         this.minPerimPoly = [];
     }
 
-    ah(i){
+    ah(i) {
         // Accesses convex hull as if it was a circular array quickly
-        return this.convexHull[(i+this.convexHull.length)%this.convexHull.length];
+        return this.convexHull[(i + this.convexHull.length) % this.convexHull.length];
     }
 
-    getCurveLen(curve){
+    getCurveLen(curve) {
         let res = 0;
-        for (let i = 0; i < curve.length-1; i++){
-            res += Math.sqrt((curve[1].x - curve[0].x)*(curve[1].x - curve[0].x) + (curve[1].y - curve[0].y)*(curve[1].y - curve[0].y));
+        for (let i = 0; i < curve.length - 1; i++) {
+            res += Math.sqrt((curve[i + 1].x - curve[i].x) * (curve[i + 1].x - curve[i].x) + (curve[i + 1].y - curve[i].y) * (curve[i + 1].y - curve[i].y));
         }
         return res;
     }
 
-    isTypeZero(i, j){ 
+    isTypeZero(i, j) {
         // 1: Reflect i to all edges until j (= q*i)
         // 2: Find intersection of q*i,qj-1 and pj-1,pj-2
         // 3: Reflect q*i,qj-1 thru pj-1,pj-2
@@ -31,61 +31,64 @@ class MinimumPerimeterSketch extends ConvexPolygonDrawer {
         // ,.....
         if (j <= i) j = j + this.convexHull.length;
         let qi = this.ah(i);
-        
-        for (let t = i+1; t < j-1; t++){
+
+        for (let t = i + 1; t < j - 1; t++) {
             let pt1 = this.ah(t);
-            let pt2 = this.ah(t+1);
+            let pt2 = this.ah(t + 1);
             let m = (pt2.y - pt1.y) / (pt2.x - pt1.x);
-            let p = pt1.y - m*pt1.x;
-            let d = (qi.x + (qi.y - p) * m) / (1 + m*m); // Formula for reflected point courtesy of https://stackoverflow.com/questions/3306838/algorithm-for-reflecting-a-point-across-a-line
-            qi = new Point(2*d - qi.x, 2*d*m - qi.y + 2*p);
+            let p = pt1.y - m * pt1.x;
+            let d = (qi.x + (qi.y - p) * m) / (1 + m * m); // Formula for reflected point courtesy of https://stackoverflow.com/questions/3306838/algorithm-for-reflecting-a-point-across-a-line
+            qi = new Point(2 * d - qi.x, 2 * d * m - qi.y + 2 * p);
         }
         // qi is now the point this.convexHull[i] reflected thru all subsequent edges of the convex Polygon until this.convexHull[j-2], this.convexHull[j-1]   
-        
+
         let pt1 = 0; // pj-2
         let pt2 = 0; // pj-1
         let qj = this.ah(j); // qj-1 = pj
         let m = 0;
         let p = 0; // Slope/intercept of pj-1,pj-2
         let m1 = (qi.y - qj.y) / (qi.x - qj.x);
-        let p1 = qj.y - m1*qj.x;  // Slope/intercept of q*i,qj-1
+        let p1 = qj.y - m1 * qj.x;  // Slope/intercept of q*i,qj-1
 
         let res = [this.ah(i)];
 
-        for (let t = j-2; t > i; t--){
-            pt1 = this.ah(t); 
-            pt2 = this.ah(t+1); 
+        for (let t = j - 2; t > i; t--) {
+            pt1 = this.ah(t);
+            pt2 = this.ah(t + 1);
 
             m = (pt2.y - pt1.y) / (pt2.x - pt1.x);
-            p = pt1.y - m*pt1.x;
+            p = pt1.y - m * pt1.x;
 
-            qj = new Point((p1-p)/(m-m1), m*((p1-p)/(m-m1))+p);
+            qj = new Point((p1 - p) / (m - m1), m * ((p1 - p) / (m - m1)) + p);
             res.push(qj);
 
-            if (qj.x > Math.max(pt1.x, pt2.x) || 
-                qj.x < Math.min(pt1.x, pt2.x) || 
-                qj.y > Math.max(pt1.y, pt2.y) || 
-                qj.y < Math.min(pt1.y, pt2.y)){
-                    return [];
-                }
+            if (qj.x > Math.max(pt1.x, pt2.x) ||
+                qj.x < Math.min(pt1.x, pt2.x) ||
+                qj.y > Math.max(pt1.y, pt2.y) ||
+                qj.y < Math.min(pt1.y, pt2.y)) {
+                return [];
+            }
 
-            m1 = ((m1 - m1*m*m - 2*m) / (-1 + m*m - 2*m1*m));
-            p1 = -m1*qj.x+qj.y;
+            m1 = ((m1 - m1 * m * m - 2 * m) / (-1 + m * m - 2 * m1 * m));
+            p1 = -m1 * qj.x + qj.y;
         }
 
         res.push(this.ah(j))
         return res;
     }
 
-    findMinimumPoly(){
+    findMinimumPoly() {
         let minimumPerimPolys = [];
-        for(let i = 0; i < this.convexHull.length; i++){
-            minimumPerimPolys.push(this.recMinimumPerimPoly(i, i+this.convexHull.length));
+        for (let i = 0; i < this.convexHull.length; i++) {
+            minimumPerimPolys.push(this.recMinimumPerimPoly(i, i + this.convexHull.length));
         }
 
+        if (this.convexHull.length % 2 == 1) {
+            minimumPerimPolys.push(this.allNSequenceType());
+        }
         let res = [];
         let min = 9999999;
-        for (let i = 0; i < minimumPerimPolys.length; i++){
+        for (let i = 0; i < minimumPerimPolys.length; i++) {
             if (minimumPerimPolys[i][1] < min) {
                 res = minimumPerimPolys[i];
                 min = minimumPerimPolys[i][1];
@@ -94,30 +97,92 @@ class MinimumPerimeterSketch extends ConvexPolygonDrawer {
         return res;
     }
 
-    recMinimumPerimPoly(i, j){
-        let k = j-i;
-        if (k == 1 || k == 2) return [[this.ah(i), this.ah(j)], this.getCurveLen([this.ah(i), this.ah(j)]), "k"+k+" "];
+    recMinimumPerimPoly(i, j) {
+        let k = j - i;
+        if (k == 1 || k == 2) return [[this.ah(i), this.ah(j)], this.getCurveLen([this.ah(i), this.ah(j)]), "k" + k + " "];
         let FOrbit = this.isTypeZero(i, j);
-        if (FOrbit.length > 0) return [FOrbit, this.getCurveLen(FOrbit), "Orb"+FOrbit.length+" "];
+        if (FOrbit.length > 0) return [FOrbit, this.getCurveLen(FOrbit), "Orb" + FOrbit.length + " "];
 
         let types = [];
-        for (let u = 1; u < k; u++){
-            let p1 = this.recMinimumPerimPoly(i, i+u);
-            let p2 = this.recMinimumPerimPoly(i+u, j);
+        for (let u = 1; u < k; u++) {
+            let p1 = this.recMinimumPerimPoly(i, i + u);
+            let p2 = this.recMinimumPerimPoly(i + u, j);
             let union = p1[0];
             union.pop();
             union = union.concat(p2[0]);
-            types.push([union, p1[1]+p2[1], p1[2] + p2[2]])
+            types.push([union, p1[1] + p2[1], p1[2] + p2[2]])
         }
         let min = 999999999;
         let res = [];
-        for (let it = 0; it < types.length; it++){
+        for (let it = 0; it < types.length; it++) {
             if (types[it][1] < min) {
                 res = types[it];
                 min = types[it][1];
             }
         }
         return res;
+    }
+
+    calculateTauFunction() {
+        // Finds a,b,c for formula aτ²+bτ+c using 3 values of τ=0.1, 0.5, 0.9
+        let t1 = 0.1;
+        let t2 = 0.5;
+        let t3 = 0.9;
+
+        let qi1 = this.ah(0);
+        let qi2 = this.ah(this.convexHull.length - 1);
+
+        let mid1 = new Point(t1 * qi1.x + (1 - t1) * qi2.x, t1 * qi1.y + (1 - t1) * qi2.y);
+        let mid2 = new Point(t2 * qi1.x + (1 - t2) * qi2.x, t2 * qi1.y + (1 - t2) * qi2.y);
+        let mid3 = new Point(t3 * qi1.x + (1 - t3) * qi2.x, t3 * qi1.y + (1 - t3) * qi2.y);
+
+        for (let i = 0; i < this.convexHull.length - 1; i++) {
+            let pt1 = this.ah(i);
+            let pt2 = this.ah(i + 1);
+            let m = (pt2.y - pt1.y) / (pt2.x - pt1.x);
+            let p = pt1.y - m * pt1.x;
+            let d1 = (qi1.x + (qi1.y - p) * m) / (1 + m * m); // Formula for reflected point courtesy of https://stackoverflow.com/questions/3306838/algorithm-for-reflecting-a-point-across-a-line
+            qi1 = new Point(2 * d1 - qi1.x, 2 * d1 * m - qi1.y + 2 * p);
+            let d2 = (qi2.x + (qi2.y - p) * m) / (1 + m * m);
+            qi2 = new Point(2 * d2 - qi2.x, 2 * d2 * m - qi2.y + 2 * p);
+        }
+
+
+        let mid1q = new Point(t1 * qi1.x + (1 - t1) * qi2.x, t1 * qi1.y + (1 - t1) * qi2.y);
+        let mid2q = new Point(t2 * qi1.x + (1 - t2) * qi2.x, t2 * qi1.y + (1 - t2) * qi2.y);
+        let mid3q = new Point(t3 * qi1.x + (1 - t3) * qi2.x, t3 * qi1.y + (1 - t3) * qi2.y);
+
+
+        let r1 = (mid1q.x - mid1.x) * (mid1q.x - mid1.x) + (mid1q.y - mid1.y) * (mid1q.y - mid1.y);
+        let r2 = (mid2q.x - mid2.x) * (mid2q.x - mid2.x) + (mid2q.y - mid2.y) * (mid2q.y - mid2.y);
+        let r3 = (mid3q.x - mid3.x) * (mid3q.x - mid3.x) + (mid3q.y - mid3.y) * (mid3q.y - mid3.y);
+
+        let a = (r3 - r1 + (t1 - t3) * ((r2 - r1) / (t2 - t1))) / (t3 * t3 - t1 * t1 + (t3 - t1) * ((-(t2 * t2) + t1 * t1) / (t2 - t1)));
+        let b = (r2 - r1 - a * t2 * t2 + a * t1 * t1) / (t2 - t1);
+        let c = r1 - a * t1 * t1 - b * t1;
+
+
+        let minTau = -b / (2 * a)
+
+
+        let minPt = new Point(minTau * this.ah(0).x + (1 - minTau) * this.ah(this.convexHull.length - 1).x,
+            minTau * this.ah(0).y + (1 - minTau) * this.ah(this.convexHull.length - 1).y);
+        let minQ = new Point(minTau * qi1.x + (1 - minTau) * qi2.x, minTau * qi1.y + (1 - minTau) * qi2.y);
+
+
+
+        return [minTau];
+    }
+
+    allNSequenceType() {
+        let tau = this.calculateTauFunction();
+
+        let res = [];
+        for (let i = 0; i < this.convexHull.length; i++) {
+            let pt = new Point(tau * this.ah(i).x + (1 - tau) * this.ah(i + 1).x, tau * this.ah(i).y + (1 - tau) * this.ah(i + 1).y)
+            res.push(pt)
+        }
+        return [res, this.getCurveLen(res) + this.getCurveLen([res[0], res[res.length - 1]])];
     }
 
 
@@ -128,7 +193,9 @@ class MinimumPerimeterSketch extends ConvexPolygonDrawer {
             let buttonDraw = p.createButton("Find");
             buttonDraw.position(30, this.canvas.position().y + BUT_POS[1]);
             buttonDraw.mousePressed(() => {
-                this.minPerimPoly = this.recMinimumPerimPoly(0, 0+this.convexHull.length)[0];
+                if (this.convexHull.length >= 5) {
+                    this.minPerimPoly = this.findMinimumPoly()[0];
+                }
             }
             );
             this.buttonBoxes.push(new BoundingBox(buttonDraw));
@@ -138,9 +205,9 @@ class MinimumPerimeterSketch extends ConvexPolygonDrawer {
             this.convexDraw(p);
 
             p.fill(122, 122, 122);
-            
-            for (let i = 0; i < this.minPerimPoly.length; i++){
-                p.ellipse(this.minPerimPoly[i].x , this.minPerimPoly[i].y, 6, 6) // TODO del
+
+            for (let i = 0; i < this.minPerimPoly.length; i++) {
+                p.ellipse(this.minPerimPoly[i].x, this.minPerimPoly[i].y, 6, 6) 
             }
 
             p.beginShape();
