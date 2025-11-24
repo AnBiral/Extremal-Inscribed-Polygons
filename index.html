@@ -234,15 +234,88 @@
     </p>
   </div>
 
-
-
-
   <div class="container">
     <div id="mas"></div>
   </div>
   <script src="MinimumArea.js"></script>
 
-  
+
+  <div>
+    <h2>Minimum Perimeter Inscribed Polygons</h2>
+    <p>
+      In order describe the Theorem we will be using to formulate our Algorithm to find Minimum Perimeter Inscribed
+      Polygons, we first need to prove a preliminary Lemma
+    </p>
+    <h3>Lemma 1</h3>
+    <p>
+      Let Q be a convex polygon with minimum perimeter inscribed in C. Let q<sub>j-1</sub>, q<sub>j</sub> ,
+      q<sub>j+1</sub> be three consecutive
+      vertices of Q. If q<sub>j</sub> is an interior point of a side p<sub>i</sub>p<sub>i+1</sub> of C, then Q
+      satisfies the optic reflection law (<a href="#Figure3">Fig.3</a>)
+      at q<sub>j</sub>, i.e. the angles ∠p<sub>i</sub>q<sub>j</sub>q<sub>j-1</sub> and
+      ∠q<sub>j+1</sub>q<sub>j</sub>p<sub>i+1</sub>
+      are equal.
+    </p>
+  </div>
+
+    <div style="width: 480px;">
+      <img id="Figure3" src="Diagrams/Fig3.png" alt="Dia3" style="width: 70%; height: 70%"><br><br>
+    </div>
+
+  <div>
+    <p>
+      In order to prove this Lemma, we can trace an Ellipse with focal points q<sub>j+1</sub>, q<sub>j-1</sub> with the
+      property that the sum of distances of q<sub>j+1</sub>, q<sub>j-1</sub> to any element on the boundary of the
+      ellipse
+      is equal to a certain constant. If we draw the ellipse in such a way that it contains q<sub>j</sub> as part of its
+      boundary, it will be tangent to the line p<sub>i</sub>p<sub>i+1</sub> at q<sub>j</sub>, such that q<sub>j</sub> is
+      the point of p<sub>i</sub>p<sub>i+1</sub> that minimizes the sum of distances to q<sub>j+1</sub>, q<sub>j-1</sub>.
+      We can then use a
+      property of ellipses that the tangent Line at q<sub>j</sub> bisects the exterior angles of the triangle
+      q<sub>j+1</sub>q<sub>j</sub>q<sub>j-1</sub> [<a href="#Cite3">3</a>], proving that q<sub>j</sub> satisfies the
+      optic reflection
+      law.<br><br>
+    </p>
+  </div>
+
+  <div>
+    <p>
+      In addition, we will mention the existence of Fagnano Orbits [<a href="#Cite2">2</a>], convex polygons inscribed
+      in C such that every
+      vertex satisfies the optic reflection law. These orbits have a property that they can be modified in even-sided
+      polygons in such a way to create an infinite amount of Fagnano Orbits, all of which are Minimum Perimeter
+      Inscribed Polygons. (see <a href="#Figure4">Fig.4</a>) <br>
+      We will also remind the reader of the notation s(Q), corresponding to the sequence of vertices of C and whether
+      they coincide with verices of Q. In addition we introduce the notation F(C), the set of Minimum Perimeter
+      Inscribed Polygons in C.
+    </p>
+  </div>
+
+  <div style="width: 480px;">
+    <figure>
+      <img id="Figure4" src="Diagrams/4a.png" alt="Dia4a" style="width: 70%; height: 70%"><br><br>
+      <figcaption>Fig.4 - Courtesy of [<a href="#Cite1">1</a>]</figcaption>
+    </figure>
+  </div>
+
+
+  <div>
+    <h3>Theorem 3</h3>
+    <p>
+      Let s ∈ {U , N}n . Then the following holds.<br><br>
+      (i) If n is odd or s ≠ {N,N,...,N}, then there is at most one minimum perimeter polygon Q ∈ F(C) with s(Q) =
+      s.<br>
+      (ii) If n is even and s = {N,N,...,N}, then either there is no Q ∈ F(C) with s(Q) = s, or there are infinitely
+      many. In the latter case, if Q<sub>1</sub>, Q<sub>2</sub> ∈ F(C) satisfy s(Q<sub>1</sub>) = s(Q<sub>2</sub>) = s,
+      then all corresponding pairs of sides of Q<sub>1</sub> and Q<sub>2</sub> are parallel (<a href="#Figure4">Fig.4</a>).<br><br><br>
+    </p>
+  </div>
+
+  <div>
+
+  </div>
+
+
   <div class="container">
     <div id="mps"></div>
   </div>
@@ -263,6 +336,24 @@
   /* each side of Q must contain at least one vertex of C */
   /* and hence, ⁎ depends only on and does not depend on */
 
+
+  <ol>
+    <li>
+      <cite id="Cite1"><a href="https://www.sciencedirect.com/science/article/pii/S0925772121001000#br0100">Extremal
+          convex polygons inscribed in a given convex polygon</a></cite>, CL Ködmön, Z Lángi
+    </li>
+    <li>
+      <cite id="Cite2"><a href="https://link.springer.com/article/10.1134/S1560354709020075">On the existence of Fagnano
+          trajectories in convex polygonal billiards</a></cite>, A. Deniz, A. Ratiu
+    </li>
+    <li>
+      <cite id="Cite3">
+        <a
+          href="https://books.google.be/books?hl=en&lr=&id=xK2paDSkDfQC&oi=fnd&pg=PA3&ots=Yc4rL5En5y&sig=CN_5Wkn8mhI7b7q2pNDmNIXkY4Q&redir_esc=y#v=onepage&q&f=false">
+          Conic Sections</a>
+      </cite>, W.H. Besant
+    </li>
+  </ol>
 </body>
 
 </html>

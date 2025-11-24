@@ -124,7 +124,7 @@ class MinimumPerimeterSketch extends ConvexPolygonDrawer {
     }
 
     calculateTauFunction() {
-        // Finds a,b,c for formula aτ²+bτ+c using 3 values of τ=0.1, 0.5, 0.9
+        // Finds minimum τ for formula aτ²+bτ+c using 3 values of τ=0.1, 0.5, 0.9
         let t1 = 0.1;
         let t2 = 0.5;
         let t3 = 0.9;
