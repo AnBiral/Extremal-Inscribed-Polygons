@@ -13,11 +13,11 @@ class MinimumAreaSketch extends ConvexPolygonDrawer {
     }
 
     computeTriangles() {
-        for (let i in this.convexHull) {
+        for (let i = 0; i < this.convexHull.length; i++) {
             let curr = this.convexHull[i];
             let prev = this.convexHull[(i + this.convexHull.length - 1) % this.convexHull.length];
             let next = this.convexHull[(i + this.convexHull.length + 1) % this.convexHull.length];
-            this.triAreas[i] = Math.abs((prev.x - next.x) * (curr.y - prev.y) - (prev.x - curr.x) * (next.y - prev.y)) / 2;
+            this.triAreas[i] = Math.abs((curr.x - prev.x) * (next.y - prev.y) - (next.x - prev.x) * (curr.y - prev.y)) / 2;
         }
     }
 
@@ -53,6 +53,8 @@ class MinimumAreaSketch extends ConvexPolygonDrawer {
         let a1 = this.getA1(this.triAreas.length - 1);
         let a2 = this.getA2(this.triAreas.length);
 
+
+
         if (a1[0] > a2[0]) return a1[1];
         else return a2[1];
     }
@@ -70,7 +72,7 @@ class MinimumAreaSketch extends ConvexPolygonDrawer {
                     let sQInv = this.findMinimumArea();
                     for (let i = 0; i < this.convexHull.length; i++) {
                         var add = true;
-                        for (let j in sQInv) {
+                        for (let j=0; j < sQInv.length; j++) {
                             if (sQInv[j] == i) add = false;
                         }
                         if (add) this.sQ.push(i);
@@ -84,6 +86,8 @@ class MinimumAreaSketch extends ConvexPolygonDrawer {
         p.draw = () => {
             this.convexDraw(p);
             p.fill(122, 122, 122);
+
+            if (this.convexHull.length >= 1) p.ellipse(this.convexHull[0].x, this.convexHull[0].y, 9, 9) 
 
             p.beginShape();
 

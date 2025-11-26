@@ -7,10 +7,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <title>Extremal Inscribed Polygons</title>
-  <script src="p5.js"></script>
-  <script src="utils.js"></script>
-  <script src="ConvexPolygonDrawer.js"></script>
-  <script src="MovableArea.js"></script>
+  <script src="src/Base/p5.js"></script>
+  <script src="src/Base/utils.js"></script>
+  <script src="src/Base/ConvexPolygonDrawer.js"></script>
+  <script src="src/Base/MovableArea.js"></script>
 
   <style>
     .row {
@@ -32,7 +32,7 @@
       In this webpage, we will describe algorithms to find the convex polygons inscribed in a given convex n-gon
       (An n-gon being a polygon with n sides. In the context of this work, n >= 5) of minimal area and perimeter.
       In order to do this, we will describe and explain a series of theorems and lemmas that will define how said
-      algorithms will function.
+      algorithms will function. The majority of this page is based on the work of [<a href="#Cite1">1</a>].
     </p>
   </div>
 
@@ -74,7 +74,7 @@
   <div>
     <h2>Some other assumptions...</h2>
     <p>
-      For the purposed of clarity and brevity, here are some statements that will remain true throughout: <br>
+      For the purpose of clarity and brevity, here are some statements that will remain true throughout: <br>
       > All polygons discussed are <i>convex</i> polygons. i.e, polygons such that every line between any 2 points in
       the polygon
       is either entirely inside the polygon, or part of its boundary. <br>
@@ -136,7 +136,7 @@
         <div class="container">
           <div id="parallel"></div>
         </div>
-        <script src="AreaParallel.js"></script>
+        <script src="src/Sketches/AreaParallel.js"></script>
       </div>
 
 
@@ -144,7 +144,7 @@
         <div class="container">
           <div id="nonParallel"></div>
         </div>
-        <script src="AreaNonParallel.js"></script>
+        <script src="src/Sketches/AreaNonParallel.js"></script>
       </div>
 
     </div>
@@ -225,19 +225,22 @@
       max{A<sup>1</sup><sub>4</sub>, A<sup>2</sup><sub>5</sub>} = A<sup>2</sup><sub>n</sub> = (T<sub>2</sub> +
       T<sub>5</sub>), then Q = conv(p<sub>1</sub>, p<sub>3</sub>, p<sub>4</sub>). Notice that this corresponds to the
       polygons in <a href="#Figure1">Figure 1.b</a>, as described in the preamble.)<br><br><br>
+    </p>
+  </div>
+
+  <div>
+    <p id="instructionsArea">
       Below, you can find an interactive tool to try out this algorithm. Click anywhere on the canvas to place a point.
       If the canvas contains 3 or more points, it will automatically compute and display the convex hull of the set of
       points (i.e. the circumscribed polygon C). If C contains 5 or more points, click on the "find" button to display
       the minimum area polygon inscribed in C.
-
-
     </p>
   </div>
 
   <div class="container">
     <div id="mas"></div>
   </div>
-  <script src="MinimumArea.js"></script>
+  <script src="src/Sketches/MinimumArea.js"></script>
 
 
   <div>
@@ -271,7 +274,7 @@
       boundary, it will be tangent to the line p<sub>i</sub>p<sub>i+1</sub> at q<sub>j</sub>, such that q<sub>j</sub> is
       the point of p<sub>i</sub>p<sub>i+1</sub> that minimizes the sum of distances to q<sub>j+1</sub>, q<sub>j-1</sub>.
       We can then use a
-      property of ellipses that the tangent Line at q<sub>j</sub> bisects the exterior angles of the triangle
+      property of ellipses that the tangent line at q<sub>j</sub> bisects the exterior angles of the triangle
       q<sub>j+1</sub>q<sub>j</sub>q<sub>j-1</sub> [<a href="#Cite3">3</a>], proving that q<sub>j</sub> satisfies the
       optic reflection
       law.<br><br>
@@ -286,7 +289,7 @@
       polygons in such a way to create an infinite amount of Fagnano Orbits, all of which are Minimum Perimeter
       Inscribed Polygons. (see <a href="#Figure4">Fig.4</a>) <br>
       We will also remind the reader of the notation s(Q), corresponding to the sequence of vertices of C and whether
-      they coincide with verices of Q. In addition we introduce the notation F(C), the set of Minimum Perimeter
+      they coincide with verices of Q. In addition we introduce the notation Ƒ(C), the set of Minimum Perimeter
       Inscribed Polygons in C.
     </p>
   </div>
@@ -302,11 +305,11 @@
   <div>
     <h3>Theorem 3</h3>
     <p>
-      Let s ∈ {U , N}n . Then the following holds.<br><br>
-      (i) If n is odd or s ≠ {N,N,...,N}, then there is at most one minimum perimeter polygon Q ∈ F(C) with s(Q) =
+      Let s ∈ {U , N}<sup>n</sup> . Then the following holds.<br><br>
+      (i) If n is odd or s ≠ {N,N,...,N}, then there is at most one minimum perimeter polygon Q ∈ Ƒ(C) with s(Q) =
       s.<br>
-      (ii) If n is even and s = {N,N,...,N}, then either there is no Q ∈ F(C) with s(Q) = s, or there are infinitely
-      many. In the latter case, if Q<sub>1</sub>, Q<sub>2</sub> ∈ F(C) satisfy s(Q<sub>1</sub>) = s(Q<sub>2</sub>) = s,
+      (ii) If n is even and s = {N,N,...,N}, then either there is no Q ∈ Ƒ(C) with s(Q) = s, or there are infinitely
+      many. In the latter case, if Q<sub>1</sub>, Q<sub>2</sub> ∈ Ƒ(C) satisfy s(Q<sub>1</sub>) = s(Q<sub>2</sub>) = s,
       then all corresponding pairs of sides of Q<sub>1</sub> and Q<sub>2</sub> are parallel (<a
         href="#Figure4">Fig.4</a>).<br><br><br>
     </p>
@@ -317,10 +320,11 @@
       To prove (i), we assume s contains 2 U's, corresponding to p<sub>i</sub>=q<sub>i</sub> and
       p<sub>j</sub>=q<sub>j-1</sub>, with q<sub>i+1</sub> ∈ p<sub>i+1</sub>p<sub>i+2</sub>,..., q<sub>j-2</sub> ∈
       p<sub>j-2</sub>p<sub>j-1</sub>. If we reflect q<sub>i</sub> through p<sub>i+1</sub>p<sub>i+2</sub> onto a point
-      q'<sub>i</sub>, since q<sub>i</sub>q<sub>i+1</sub>q<sub>i+2</sub> follow the optic reflection law, q'<sub>i</sub>,
+      q'<sub>i</sub>, since q<sub>i</sub>q<sub>i+1</sub>q<sub>i+2</sub> follows the optic reflection law,
+      q'<sub>i</sub>,
       q<sub>i+1</sub> and q<sub>i+2</sub> are collinear, and if we reflect q'<sub>i</sub> again through
       p<sub>i+2</sub>p<sub>i+3</sub> onto q''<sub>i</sub>, q''<sub>i</sub> will be collinear to q<sub>i+2</sub> and
-      q<sub>i+3</sub>, etc. <br>
+      q<sub>i+3</sub>, etc. (see <a href="#Figure5">Fig.5</a>)<br>
       Another consequence of this is that the length |q'<sub>i</sub>q<sub>i+2</sub>| = |q<sub>i</sub>q<sub>i+1</sub>| +
       |q<sub>i+1</sub>q<sub>i+2</sub>|, and |q''<sub>i</sub>q<sub>i+2</sub>| = |q'<sub>i</sub>q<sub>i+2</sub>| +
       |q<sub>i+2</sub>q<sub>i+3</sub>|, ... <br>
@@ -340,14 +344,26 @@
       We can generalize this to any valus of s; If s contains 1 U, we can define p<sub>i</sub>=p<sub>j</sub>, and if s
       contains more than 2 U's, we can apply this for every subsequent pair of vertices of C corresponding to
       U's.<br><br>
+    </p>
+  </div>
 
-      If n is odd and s(Q) = NNN...N, let q<sub>0</sub> be the vertex on p<sub>n</sub>p<sub>1</sub>, and for l ∈ {n, 1},
+
+  <div style="width: 1200px;">
+    <img id="Figure5" src="Diagrams/5abc.png" alt="Dia5" style="width: 70%; height: 70%"><br><br>
+  </div>
+
+
+  <div>
+    <p>
+      If n is odd and s(Q) = {NNN...N}, let q<sub>0</sub> be the vertex on p<sub>n</sub>p<sub>1</sub>, and for l ∈ {n,
+      1},
       let p*<sub>l</sub> be the vertex p<sub>l</sub> reflected through p<sub>1</sub>p<sub>2</sub> until
       p<sub>n-1</sub>p<sub>n</sub>. We define a value τ between 0 and 1, and both q(τ) = τp<sub>n</sub> +
-      (1-τ)p<sub>1</sub> q*(τ) = τp*<sub>n</sub> + (1-τ)p*<sub>1</sub>. Using the argument from the previous paragraph,
+      (1-τ)p<sub>1</sub>, as well as q*(τ) = τp*<sub>n</sub> + (1-τ)p*<sub>1</sub>. Using the argument from the previous
+      paragraph,
       we know that there is exactly one polygonal curve Γ(τ) starting at q(τ), going through all subsequent vertices
       q<sub>1</sub>(τ),..., q<sub>n-1</sub>(τ) and back to q(τ), such that every vertex satisfies the optic reflection
-      law. We can find this curve by applying the reflection and intersection argument hsown previously. <br>
+      law. We can find this curve by applying the reflection and intersection argument shown previously. <br>
       However, we still need to find the value of τ that minimizes the length of Γ(τ) (which, as shown before, is equal
       to |q*(τ)q(τ)|). If we define |q*(τ)q(τ)|² = aτ² + bτ + c for some a >= 0, b,c ∈ &real;, we can find a minimum of
       |q*(τ)q(τ)|² as a function of τ. Hence, we either have at most one Γ(τ) such that all of its vertices are
@@ -362,7 +378,89 @@
       q<sub>1</sub>(τ<sub>0</sub>)q<sub>2</sub>(τ<sub>0</sub>), a pattern which repeats for every subsequent pair of
       parallel sides (see <a href="#Figure4">Fig.4</a>). We thus obtain that, if the trajectory starting at
       q(τ<sub>0</sub>) ends back at its start, the trajectory starting at q(τ<sub>1</sub>) only ends at its start if the
-      sum of distances between edges of Q(τ<sub>0</sub>) and Q(τ<sub>1</sub>) is equal to 0, which is only true if n is even.
+      sum of distances between edges of Q(τ<sub>0</sub>) and Q(τ<sub>1</sub>) is equal to 0, which is only true if n is
+      even.
+    </p>
+  </div>
+
+  <div>
+    <h3>The Algorithm</h3>
+    <p>
+      This algorithm is based on one finding a maximum area polygon circumscribed around a convex polygon [<a
+        href="#Cite4">4</a>], with necessary modifications.<br><br>
+      <br>
+      For any i, j with i < j <=i+n, let Γ<sub>ij</sub> be a shortest polygonal curve between p<sub>i</sub> and
+        p<sub>j</sub>, with vertices q<sub>1</sub> to q<sub>m</sub>, such that:<br><br>
+        (i) q<sub>1</sub> = p<sub>i</sub>, q<sub>m</sub> = p<sub>j</sub> and all vertices of Γ<sub>ij</sub> are boundary
+        points of C,<br>
+        (ii) all sides p<sub>i</sub>p<sub>i+1</sub>, p<sub>i+1</sub>p<sub>i+2</sub>,..., p<sub>j-1</sub>p<sub>j</sub>
+        contain at least one vertex of Γ<sub>ij</sub>, and<br>
+        (iii) the points q<sub>1</sub>, q<sub>2</sub>,..., q<sub>m</sub> are in this councerclockwise order in the
+        boundary of C.<br><br>
+
+        Let Π<sub>ij</sub> be the length of curve Γ<sub>ij</sub>. If Q ∈ Ƒ(C), and s(Q) contains at least one U, then
+        clearly the minimum perimeter inscribed polygon's length is Π<sub>i,i+n</sub> for some value of i, since s(Q)
+        contains (at least) 1 U, and Γ<sub>i,i+n</sub> is the polygon Q such that s<sub>i</sub>(Q) = U. The following
+        algorithm recursively finds Γ<sub>i,i+n</sub> and Π<sub>i,i+n</sub>.<br><br>
+
+        We start by noting that Π<sub>i,i+1</sub> = |p<sub>i</sub>p<sub>i+1</sub>| and Π<sub>i,i+2</sub> =
+        |p<sub>i</sub>p<sub>i+2</sub>|. Next, in order to find the length of curves inscribed in more than 3 vertices,
+        we define k such that 2 < k <=n. We can then subdivide any curve Γ<sub>i,i+k</sub> into k different
+          types.<br><br>
+          Type 0: None of the points of Γ<sub>i,j=i+k</sub> are interior points of C, except q<sub>1</sub>=p<sub>i</sub>
+          and q<sub>m</sub>=p<sub>j</sub>.<br>
+          Type u: For some 1 <= u < k, the point q<sub>1+u</sub>=p<sub>i+u</sub> is a vertex of both C and
+            Γ<sub>i,j</sub>.<br><br>
+            If Γ<sub>i,j</sub> is of type 0, we can trivially find all vertices q<sub>1</sub>, q<sub>2</sub>,...,
+            q<sub>m</sub> by applying the reflection and intersection procedure described in Theorem 3.<br>
+            If Γ<sub>i,j</sub> is of type u for some 1 <= u < k, we can divide Γ<sub>i,j</sub> into two
+              sub-curves Γ<sub>i,i+u</sub>, Γ<sub>i+u,j</sub> such that Π<sub>i,j</sub> = Π<sub>i,i+u</sub> +
+              Π<sub>i+u,j</sub>.<br><br>
+              Hence, for any Γ<sub>i,i+n</sub>, we can calculate its length for each possible type it can be (type 0 or
+              type u), and its minimum length will be the minimum of the length for all possible types (if it is of type
+              u, we can recursively apply this procedure for Γ<sub>i,i+u</sub> and Γ<sub>i+u,j</sub>).
+
+    </p><br><br>
+    <p>
+      Now that we have p(C)<sub>1</sub> = min{Π<sub>i,i+n</sub> : i = 1, 2,..., n} the minimum perimeter inscribed
+      polygon for s(Q) ≠ {NNN...N}, we still need to find the length of Q for s(Q) = {NNN...N}. <br>
+      To do this, we apply the same procedure as for the latter part of the proof of Theorem 3, by reflecting the
+      segment p<sub>n</sub>p<sub>1</sub> through all subsequend adjacent edges on one side onto
+      p*<sub>n</sub>p*<sub>1</sub>. <br>
+      (NOTE: The following part is not part of [<a href="#Cite1">1</a>], so it may not be as precise)<br>
+      We can then find the value of τ that minimizes |q(τ)q*(τ)| by defining 3 values τ<sub>1</sub>, τ<sub>2</sub>,
+      τ<sub>3</sub>, and the lengths d<sub>1</sub> = |q(τ<sub>1</sub>)q*(τ<sub>1</sub>)|², d<sub>2</sub> =
+      |q(τ<sub>2</sub>)q*(τ<sub>2</sub>)|² and d<sub>3</sub> = |q(τ<sub>3</sub>)q*(τ<sub>3</sub>)|². Using these values
+      we can find a general function aτ² + bτ + c = |q(τ)q*(τ)|² by defining 3 equations<br>
+      aτ<sub>1</sub>² + bτ<sub>1</sub> + c = d<sub>1</sub><br>
+      aτ<sub>2</sub>² + bτ<sub>2</sub> + c = d<sub>2</sub><br>
+      aτ<sub>3</sub>² + bτ<sub>3</sub> + c = d<sub>3</sub><br>
+      and rewriting them until we get the following values of a, b, c (<a href="#Figure6">Fig.6</a>).
+    </p>
+  </div>
+
+  <div style="width: 800px;">
+    <img id="Figure6" src="Diagrams/distabc.png" alt="Dia6" style="width: 70%; height: 70%"><br><br>
+  </div>
+
+  <div>
+    <p>
+      Using these values, we can find the minimum τ<sub>0</sub> = -b/2a. Following this, we can simply apply the
+      reflection and intersection argument from Theorem 3 (<a href="#Figure5">Fig.5</a>) in order to find all other
+      values of q. The minimum perimeter inscribed polygon Q in C is then min(p<sub>1</sub>(C), Γ(τ<sub>0</sub>)). Note
+      that, for even-sided polygons, we do need to consider the case s(Q) = {NNN...N}, since, by the properties of
+      Fagnano
+      orbits, we can 'slide' q<sub>i</sub> around on p<sub>i</sub>p<sub>i+1</sub> without changing the length of the
+      perimeter of Q. This means that if we have Q<sub>0</sub> with s(Q<sub>0</sub>) = {NNN...N} for n even, we can find
+      a
+      Q<sub>1</sub> with s(Q<sub>1</sub>) ≠ {NNN...N} and |Q<sub>0</sub>| = |Q<sub>1</sub>|.<br><br><br>
+    </p>
+  </div>
+
+  <div>
+    <p>
+      As with the previous Algorithm, you can find an interactive tool to try out the Minimum Perimeter Inscribed
+      Polygon finder Algorithm. For instructions, see <a href="#instructionsArea">Previous Instructions</a>.
     </p>
   </div>
 
@@ -370,7 +468,7 @@
   <div class="container">
     <div id="mps"></div>
   </div>
-  <script src="MinimumPerimeter.js"></script>
+  <script src="src/Sketches/MinimumPerimeter.js"></script>
 
   <div>
     <h2 id="Glossary">
@@ -381,29 +479,36 @@
       area(K) - Area of a convex area K. <br>
       perim(K) - Perimeter of a convex area K. <br>
       conv(X) - Convex Hull of a set of points (i.e. the smallest convex polygon that contains all points). <br>
+      Ƒ(C) - Set of minimum perimeter polygons inscribed in C.<br>
+      Γ<sub>i,j</sub> - Polygonal Curve between points p<sub>i</sub> and p<sub>j</sub><br>
+      Π<sub>i,j</sub> - Length of Curve Γ<sub>i,j</sub><br>
     </p>
   </div>
-
-  /* each side of Q must contain at least one vertex of C */
-  /* and hence, ⁎ depends only on and does not depend on */
 
 
   <ol>
     <li>
-      <cite id="Cite1"><a href="https://www.sciencedirect.com/science/article/pii/S0925772121001000#br0100">Extremal
-          convex polygons inscribed in a given convex polygon</a></cite>, CL Ködmön, Z Lángi
+      Ködmön, C. L., Lángi, Z. (2021). <cite id="Cite1"><a href="https://doi.org/10.1016/j.comgeo.2021.101844">Extremal
+          convex polygons inscribed in a given convex polygon</a></cite>. Computational Geometry, 102, 101844.
     </li>
     <li>
-      <cite id="Cite2"><a href="https://link.springer.com/article/10.1134/S1560354709020075">On the existence of Fagnano
-          trajectories in convex polygonal billiards</a></cite>, A. Deniz, A. Ratiu
+      Deniz, A., Ratiu, A. (2009). <cite id="Cite2"><a href="https://doi.org/10.1134/S1560354709020075">On the existence
+          of Fagnano
+          trajectories in convex polygonal billiards</a></cite>. Regul. Chaot. Dyn. 14, 312-322.
     </li>
     <li>
-      <cite id="Cite3">
+      Besant, W. H. (1895). <cite id="Cite3">
         <a
           href="https://books.google.be/books?hl=en&lr=&id=xK2paDSkDfQC&oi=fnd&pg=PA3&ots=Yc4rL5En5y&sig=CN_5Wkn8mhI7b7q2pNDmNIXkY4Q&redir_esc=y#v=onepage&q&f=false">
-          Conic Sections</a>
-      </cite>, W.H. Besant
+          Conic Sections Treated Geometrically. </a>
+      </cite>G. Bell.
     </li>
+    <li>
+      Ausserhofer, M., Dann, S., Lángi, Z., Tóth, G. (2019). <cite id="Cite4"><a
+          href="https://doi.org/10.1016/j.dam.2018.08.017">An algorithm to find maximum area polygons circumscribed
+          about a convex polygon. </a></cite>. Discrete applied mathematics, 255, 98-108.
+    </li>
+
   </ol>
 </body>
 
