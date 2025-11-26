@@ -86,6 +86,7 @@ class MinimumPerimeterSketch extends ConvexPolygonDrawer {
         if (this.convexHull.length % 2 == 1) {
             minimumPerimPolys.push(this.allNSequenceType());
         }
+        console.log(minimumPerimPolys)
         let res = [];
         let min = 9999999;
         for (let i = 0; i < minimumPerimPolys.length; i++) {
@@ -171,20 +172,49 @@ class MinimumPerimeterSketch extends ConvexPolygonDrawer {
 
 
 
-        return [minTau];
+        return [minTau, minPt, minQ];
     }
 
     allNSequenceType() {
-        let tau = this.calculateTauFunction();
+        let taus =  this.calculateTauFunction();
+        let tau = taus[0]
 
         let res = [];
-        for (let i = 0; i < this.convexHull.length; i++) {
-            let pt = new Point(tau * this.ah(i).x + (1 - tau) * this.ah(i + 1).x, tau * this.ah(i).y + (1 - tau) * this.ah(i + 1).y)
-            res.push(pt)
+
+        let pt1 = new Point(0, 0);
+        let pt2 = new Point(0, 0);
+        let qj = taus[1];
+        let qi = taus[2];
+        let m = 0;
+        let p = 0; 
+        let m1 = (qi.y - qj.y) / (qi.x - qj.x);
+        let p1 = qj.y - m1 * qj.x; 
+        
+        res.push(qj);
+
+        for (let t = this.convexHull.length-1; t > 0; t--) {
+            pt1 = this.ah(t);
+            pt2 = this.ah(t - 1);
+
+            m = (pt2.y - pt1.y) / (pt2.x - pt1.x);
+            p = pt1.y - m * pt1.x;
+
+            qj = new Point((p1 - p) / (m - m1), m * ((p1 - p) / (m - m1)) + p);
+            res.push(qj);
+
+            if (qj.x > Math.max(pt1.x, pt2.x) ||
+                qj.x < Math.min(pt1.x, pt2.x) ||
+                qj.y > Math.max(pt1.y, pt2.y) ||
+                qj.y < Math.min(pt1.y, pt2.y)) {
+                return [];
+            }
+
+            m1 = ((m1 - m1 * m * m - 2 * m) / (-1 + m * m - 2 * m1 * m));
+            p1 = -m1 * qj.x + qj.y;
         }
+
         return [res, this.getCurveLen(res) + this.getCurveLen([res[0], res[res.length - 1]])];
     }
-
 
     generateSketch = (p) => {
 

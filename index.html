@@ -258,9 +258,9 @@
     </p>
   </div>
 
-    <div style="width: 480px;">
-      <img id="Figure3" src="Diagrams/Fig3.png" alt="Dia3" style="width: 70%; height: 70%"><br><br>
-    </div>
+  <div style="width: 480px;">
+    <img id="Figure3" src="Diagrams/Fig3.png" alt="Dia3" style="width: 70%; height: 70%"><br><br>
+  </div>
 
   <div>
     <p>
@@ -307,12 +307,63 @@
       s.<br>
       (ii) If n is even and s = {N,N,...,N}, then either there is no Q ∈ F(C) with s(Q) = s, or there are infinitely
       many. In the latter case, if Q<sub>1</sub>, Q<sub>2</sub> ∈ F(C) satisfy s(Q<sub>1</sub>) = s(Q<sub>2</sub>) = s,
-      then all corresponding pairs of sides of Q<sub>1</sub> and Q<sub>2</sub> are parallel (<a href="#Figure4">Fig.4</a>).<br><br><br>
+      then all corresponding pairs of sides of Q<sub>1</sub> and Q<sub>2</sub> are parallel (<a
+        href="#Figure4">Fig.4</a>).<br><br><br>
     </p>
   </div>
 
   <div>
+    <p>
+      To prove (i), we assume s contains 2 U's, corresponding to p<sub>i</sub>=q<sub>i</sub> and
+      p<sub>j</sub>=q<sub>j-1</sub>, with q<sub>i+1</sub> ∈ p<sub>i+1</sub>p<sub>i+2</sub>,..., q<sub>j-2</sub> ∈
+      p<sub>j-2</sub>p<sub>j-1</sub>. If we reflect q<sub>i</sub> through p<sub>i+1</sub>p<sub>i+2</sub> onto a point
+      q'<sub>i</sub>, since q<sub>i</sub>q<sub>i+1</sub>q<sub>i+2</sub> follow the optic reflection law, q'<sub>i</sub>,
+      q<sub>i+1</sub> and q<sub>i+2</sub> are collinear, and if we reflect q'<sub>i</sub> again through
+      p<sub>i+2</sub>p<sub>i+3</sub> onto q''<sub>i</sub>, q''<sub>i</sub> will be collinear to q<sub>i+2</sub> and
+      q<sub>i+3</sub>, etc. <br>
+      Another consequence of this is that the length |q'<sub>i</sub>q<sub>i+2</sub>| = |q<sub>i</sub>q<sub>i+1</sub>| +
+      |q<sub>i+1</sub>q<sub>i+2</sub>|, and |q''<sub>i</sub>q<sub>i+2</sub>| = |q'<sub>i</sub>q<sub>i+2</sub>| +
+      |q<sub>i+2</sub>q<sub>i+3</sub>|, ... <br>
+      Following this logic to its conclusion, if we reflect q<sub>i</sub> through all edges
+      p<sub>i+1</sub>p<sub>i+2</sub> until p<sub>j-2</sub>p<sub>j-1</sub> onto a point q*<sub>i</sub>, we can assert
+      that q*<sub>i</sub>, q<sub>j-1</sub> and q<sub>j-2</sub> are collinear, and that the length
+      |q*<sub>i</sub>q<sub>j-1</sub>| is equal to the sum of all lengths of the minimum perimeter polygonal curve Γ
+      containing all edges of Q from q<sub>i</sub> to q<sub>j-1</sub>. An important thing to note is that the position
+      of q*<sub>i</sub> and the length of the minimum length polygonal curve is wholly independent of any vertex of Q
+      between, but not including, q<sub>i</sub> and q<sub>j-1</sub>. Since this is the case, we can find the
+      intersection of q*<sub>i</sub>q<sub>j-1</sub> and
+      p<sub>j-2</sub>p<sub>j-1</sub> (which corresponds to q<sub>j-2</sub>), and reflect
+      q*<sub>i</sub>q<sub>j-1</sub> through p<sub>j-2</sub>p<sub>j-1</sub>, which results in a line that intersects
+      p<sub>j-3</sub>p<sub>j-2</sub> on q<sub>j-3</sub>. Subsequently reflecting q*<sub>i</sub>q<sub>j-1</sub> and
+      finding intersections gives us the positions of all intermediate vertices between q<sub>i</sub> and
+      q<sub>j-1</sub>.<br><br>
+      We can generalize this to any valus of s; If s contains 1 U, we can define p<sub>i</sub>=p<sub>j</sub>, and if s
+      contains more than 2 U's, we can apply this for every subsequent pair of vertices of C corresponding to
+      U's.<br><br>
 
+      If n is odd and s(Q) = NNN...N, let q<sub>0</sub> be the vertex on p<sub>n</sub>p<sub>1</sub>, and for l ∈ {n, 1},
+      let p*<sub>l</sub> be the vertex p<sub>l</sub> reflected through p<sub>1</sub>p<sub>2</sub> until
+      p<sub>n-1</sub>p<sub>n</sub>. We define a value τ between 0 and 1, and both q(τ) = τp<sub>n</sub> +
+      (1-τ)p<sub>1</sub> q*(τ) = τp*<sub>n</sub> + (1-τ)p*<sub>1</sub>. Using the argument from the previous paragraph,
+      we know that there is exactly one polygonal curve Γ(τ) starting at q(τ), going through all subsequent vertices
+      q<sub>1</sub>(τ),..., q<sub>n-1</sub>(τ) and back to q(τ), such that every vertex satisfies the optic reflection
+      law. We can find this curve by applying the reflection and intersection argument hsown previously. <br>
+      However, we still need to find the value of τ that minimizes the length of Γ(τ) (which, as shown before, is equal
+      to |q*(τ)q(τ)|). If we define |q*(τ)q(τ)|² = aτ² + bτ + c for some a >= 0, b,c ∈ &real;, we can find a minimum of
+      |q*(τ)q(τ)|² as a function of τ. Hence, we either have at most one Γ(τ) such that all of its vertices are
+      contained in sides of C, and its length is minimal for all values of τ, or that the length |q*(τ)q(τ)| is
+      independent of τ. If the latter is true, then the vector formed by points q(τ) and q*(τ) is identical for all
+      values of τ. This means that all edges for any two Q(τ<sub>0</sub>) and Q(τ<sub>1</sub>) are parallel. <br>
+      In order to finish the proof, we need to prove that parallel Q(τ<sub>0</sub>) and Q(τ<sub>1</sub>) can only exist
+      if n is even. To do this, we consider the signed distance between parallel segments
+      q(τ<sub>1</sub>)q<sub>1</sub>(τ<sub>1</sub>) and
+      q(τ<sub>0</sub>)q<sub>1</sub>(τ<sub>0</sub>) is the opposite to the signed distance between
+      q<sub>1</sub>(τ<sub>1</sub>)q<sub>2</sub>(τ<sub>1</sub>) and
+      q<sub>1</sub>(τ<sub>0</sub>)q<sub>2</sub>(τ<sub>0</sub>), a pattern which repeats for every subsequent pair of
+      parallel sides (see <a href="#Figure4">Fig.4</a>). We thus obtain that, if the trajectory starting at
+      q(τ<sub>0</sub>) ends back at its start, the trajectory starting at q(τ<sub>1</sub>) only ends at its start if the
+      sum of distances between edges of Q(τ<sub>0</sub>) and Q(τ<sub>1</sub>) is equal to 0, which is only true if n is even.
+    </p>
   </div>
 
 
